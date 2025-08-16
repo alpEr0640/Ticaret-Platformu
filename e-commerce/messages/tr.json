@@ -1,0 +1,10 @@
+{
+  "HomePage": {
+    "title": "Merhaba Dünya",
+    "about": "İlgili Sayfaya Git"
+  },
+  "ProductDetail": {
+    "loading": "yükleniyor",
+    "error": "hata"
+  }
+}
