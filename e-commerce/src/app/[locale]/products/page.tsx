@@ -1,22 +1,80 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { DashboardContent } from "@/components/layout/content";
 import ProductCard from "@/components/productCard";
-import { GetProducts } from "@/services/products/hooks/useProducts";
-import { Product } from "@/services/products/types";
 import Link from "next/link";
-import React from "react";
+import { Product } from "@/services/products/types";
+import { useTranslations } from "next-intl";
 
-export default function products() {
-  const { data: products, isLoading, error } = GetProducts();
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Bir hata oluştu</p>;
+export default function ProductsPage() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [sortOrder, setSortOrder] = useState<"none" | "asc" | "desc">("none");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [categories, setCategories] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`);
+      const data: Product[] = await res.json();
+      setProducts(data);
+
+      const uniqueCategories = Array.from(new Set(data.map((p) => p.category)));
+      setCategories(uniqueCategories);
+    };
+    fetchProducts();
+  }, []);
+
+  const filteredProducts =
+    selectedCategory === "all"
+      ? products
+      : products.filter((p) => p.category === selectedCategory);
+
+  const sortedProducts =
+    sortOrder === "none"
+      ? filteredProducts
+      : [...filteredProducts].sort((a, b) =>
+          sortOrder === "asc" ? a.price - b.price : b.price - a.price
+        );
+  const t = useTranslations("Products");
   return (
     <DashboardContent>
       <div className="mb-12">
-        <div className="text-4xl font-bold text-yellow-400 py-4 my-4 "> Ürünler</div>
+        <div className="flex flex-wrap justify-between items-center gap-4 py-4 my-4">
+          <div className="text-4xl font-bold text-yellow-400">
+            {t("AllProducts")}
+          </div>
+
+          <div className="flex gap-3">
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="border rounded px-3 py-2"
+            >
+              <option value="all">All</option>
+              {categories.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={sortOrder}
+              onChange={(e) =>
+                setSortOrder(e.target.value as "none" | "asc" | "desc")
+              }
+              className="border rounded px-3 py-2"
+            >
+              <option value="none">Fiyata Göre Sırala</option>
+              <option value="asc">Fiyat: Artan</option>
+              <option value="desc">Fiyat: Azalan</option>
+            </select>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 cursor-pointer">
-          {products?.map((p: Product) => (
+          {sortedProducts.map((p) => (
             <Link key={p.id} href={`/products/${p.id}`}>
               <ProductCard product={p} />
             </Link>

@@ -1,15 +1,99 @@
-import Link from "next/link";
-import React from "react";
+"use client";
+import { useLocale, useTranslations } from "next-intl";
+import { usePathname } from "next/navigation";
+import { Link } from "@/i18n/navigation";
+import { Globe, Menu, X } from "lucide-react";
+import { useState } from "react";
+import { DashboardContent } from "./content";
 
 export default function Header() {
+  const locale = useLocale();
+  const pathname = usePathname();
+  const t = useTranslations("Header");
+
+  const nextLocale = locale === "en" ? "tr" : "en";
+
+  const segments = pathname.split("/");
+  const pathWithoutLocale = "/" + segments.slice(2).join("/");
+
+  const navItems = [
+    { href: "/", label: t("home") },
+    { href: "/products", label: t("products") },
+    { href: "/myCart", label: t("cart") },
+  ];
+
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
-    <div className="bg-red-500 min-h-[10vh] flex flex-row items-center justify-between px-24">
-      <div>Logo</div>
-      <div className="flex gap-12 ">
-        <Link href="/">Anasayfa</Link>
-        <Link href="/products">Ürünler</Link>
-        <Link href="/myCart">Sepet</Link>
+    <header className="bg-gradient-to-r from-gray-100 to-gray-200 shadow-md sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-12 lg:px-4 xl:px-0 h-[70px] flex items-center justify-between ">
+        <div className="text-2xl font-extrabold text-gray-800 tracking-wide">
+          My<span className="text-blue-500">Shop</span>
+        </div>
+
+        <nav className="hidden sm:flex items-center gap-8">
+          {navItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`relative text-gray-700 font-medium transition 
+              hover:text-blue-500
+              after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-blue-500 after:transition-all hover:after:w-full
+              ${pathname === item.href ? "text-blue-500 after:w-full" : ""}
+              `}
+            >
+              {item.label}
+            </Link>
+          ))}
+
+          <Link
+            href={pathWithoutLocale}
+            locale={nextLocale}
+            className="flex items-center gap-2 bg-gray-300/50 text-gray-700 px-3 py-1 rounded-full hover:bg-blue-100 hover:text-blue-600 transition"
+          >
+            <Globe size={16} />
+            {locale === "en" ? "Türkçe" : "English"}
+          </Link>
+        </nav>
+
+        <button
+          className="sm:hidden text-gray-700"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          {menuOpen ? <X size={28} /> : <Menu size={28} />}
+        </button>
       </div>
-    </div>
+
+      <div
+        className={`sm:hidden overflow-hidden transition-all duration-500 ease-in-out ${
+          menuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <nav className="flex flex-col items-center p-4 gap-4 bg-gray-100 border-t border-gray-200">
+          {navItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`text-gray-700 font-medium transition hover:text-blue-500
+                ${pathname === item.href ? "text-blue-500" : ""}
+              `}
+              onClick={() => setMenuOpen(false)}
+            >
+              {item.label}
+            </Link>
+          ))}
+
+          <Link
+            href={pathWithoutLocale}
+            locale={nextLocale}
+            className="flex items-center gap-2 bg-gray-300/50 text-gray-700 px-3 py-1 rounded-full hover:bg-blue-100 hover:text-blue-600 transition"
+            onClick={() => setMenuOpen(false)}
+          >
+            <Globe size={16} />
+            {locale === "en" ? "Türkçe" : "English"}
+          </Link>
+        </nav>
+      </div>
+    </header>
   );
 }

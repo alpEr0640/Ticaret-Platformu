@@ -3,8 +3,16 @@
     "title": "Hello world!",
     "about": "Go to the about page"
   },
-  "ProductDetail": {
-    "loading": "loading",
-    "error": "error"
+  "Products": {
+    "AllProducts": "All Products",
+    "Featured Products": "Featured Products",
+    "Add": "Add To Cart",
+    "remove":"Remove from Cart"
+  },
+  "Header": {
+    "home": "Home",
+    "products": "Products",
+    "cart": "Cart",
+    "switchTo": "Türkçe"
   }
 }

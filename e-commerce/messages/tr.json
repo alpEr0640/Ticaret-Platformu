@@ -3,8 +3,16 @@
     "title": "Merhaba Dünya",
     "about": "İlgili Sayfaya Git"
   },
-  "ProductDetail": {
-    "loading": "yükleniyor",
-    "error": "hata"
+  "Products": {
+    "AllProducts": "Tüm Ürünler",
+    "Featured Products": "Öne Çıkan Ürünler",
+    "Add": "Sepete Ekle",
+    "remove": "Seeptten Kaldır"
+  },
+  "Header": {
+    "home": "Anasayfa",
+    "products": "Ürünler",
+    "cart": "Sepet",
+    "switchTo": "English"
   }
 }

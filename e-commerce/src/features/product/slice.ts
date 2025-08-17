@@ -9,7 +9,7 @@ const initialState: CartState = {
   items:
     typeof window !== "undefined"
       ? JSON.parse(localStorage.getItem("cart") || "[]")
-      : [], // SSR sırasında boş başlar
+      : [], 
 };
 
 export interface CartItem {
@@ -17,6 +17,7 @@ export interface CartItem {
   name: string;
   price: number;
   quantity: number;
+   image: string;
 }
 
 export const counterSlice = createSlice({

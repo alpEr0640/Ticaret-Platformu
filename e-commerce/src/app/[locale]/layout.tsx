@@ -6,8 +6,9 @@ import Providers from "../providers";
 import { getMessages } from "next-intl/server";
 import Header from "@/components/layout/header";
 import "../globals.css";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import { Toaster } from "react-hot-toast";
+import Footer from "@/components/layout/footer";
 
 export default async function LocaleLayout({
   children,
@@ -25,10 +26,11 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <body>
-        <Header />
-         <Toaster position="top-right" />
         <Providers locale={locale} messages={messages}>
+          <Toaster position="top-right" />
+          <Header />
           {children}
+          <Footer />
         </Providers>
       </body>
     </html>
