@@ -1,0 +1,45 @@
+{
+  "metaData": {
+    "title": "Homepage",
+    "description": "Discover the most popular products and catch the best deals."
+  },
+  "homePage": {
+    "title": "Welcome to Kayra Export"
+  },
+  "products": {
+    "allProducts": "All Products",
+    "featuredProducts": "Featured Products",
+    "add": "Add To Cart",
+    "remove": "Remove from Cart",
+    "title": "All Products ",
+    "description": "Discover all products across different categories.",
+    "notFoundTitle": "Product Not Found ",
+    "notFoundDesc": "The product you are looking for is not available."
+  },
+  "cart": {
+    "mycart": "My Cart",
+    "quantity": "Quantity",
+    "summary": "Order Summary",
+    "subtotal": "Subtotal",
+    "total": "Total",
+    "emptyCart": "Your cart is empty",
+    "title": "My Cart ",
+    "description": "View the items in your cart and proceed to checkout."
+  },
+  "header": {
+    "home": "Home",
+    "products": "Products",
+    "cart": "Cart",
+    "switchTo": "Türkçe"
+  },
+  "sort": {
+    "sort": "Sort by Price",
+    "price": "price",
+    "ascent": "Low to High",
+    "descent": "High to Low"
+  },
+  "toast": {
+    "addCart": "product added to cart",
+    "removeCart": "Product remove from cart"
+  }
+}

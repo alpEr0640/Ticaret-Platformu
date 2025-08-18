@@ -1,0 +1,45 @@
+{
+  "metaData": {
+    "title": "Anasayfa",
+    "description": "En popüler ürünleri keşfedin, en iyi fırsatları yakalayın."
+  },
+  "homePage": {
+    "title": "Kayra Export'a Hoş Geldiniz"
+  },
+  "products": {
+    "allProducts": "Tüm Ürünler",
+    "featuredProducts": "Öne Çıkan Ürünler",
+    "add": "Sepete Ekle",
+    "remove": "Sepetten Kaldır",
+    "title": "Tüm Ürünler ",
+    "description": "Farklı kategorilerdeki tüm ürünleri keşfedin.",
+    "notFoundTitle": "Ürün Bulunamadı",
+    "notFoundDesc": "Aradığınız ürün mevcut değil."
+  },
+  "cart": {
+    "mycart": "Sepetim",
+    "quantity": "Adet",
+    "summary": "Sipariş Özeti",
+    "subtotal": "Ara Toplam",
+    "total": "Toplam",
+    "emptyCart": "Sepetiniz boş",
+    "title": "Sepetim ",
+    "description": "Sepetinizdeki ürünleri görüntüleyin ve ödeme işlemini başlatın."
+  },
+  "header": {
+    "home": "Anasayfa",
+    "products": "Ürünler",
+    "cart": "Sepet",
+    "switchTo": "English"
+  },
+  "sort": {
+    "sort": "Fiyata Göre Sırala",
+    "price": "Fiyat",
+    "ascent": "Artan",
+    "descent": "Azalan"
+  },
+  "toast": {
+    "addCart": "Ürün sepete eklendi",
+    "removeCart": "Ürün sepetten kaldırıldı"
+  }
+}
