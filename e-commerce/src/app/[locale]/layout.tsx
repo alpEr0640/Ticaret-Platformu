@@ -10,12 +10,22 @@ import "react-toastify/dist/ReactToastify.css";
 import { Toaster } from "react-hot-toast";
 import Footer from "@/components/layout/footer";
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"
+  ),
+  title: "E-commerce",
+  description: "Next.js + next-intl demo",
+};
+
 export default async function LocaleLayout({
   children,
   params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ locale: string }>;
+  params: { locale: string };
 }) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) {

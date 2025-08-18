@@ -6,10 +6,9 @@ import ProductDetailClient from "./productDetail";
 export async function generateMetadata({
   params,
 }: {
-  params: { locale: string; id: string };
+  params: Promise<{ locale: string; id: string }>;
 }): Promise<Metadata> {
-  const { locale, id } = params;
-
+  const { locale, id } =await  params;
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${id}`, {
     next: { revalidate: 60 },
@@ -31,13 +30,11 @@ export async function generateMetadata({
     openGraph: {
       title: product.title,
       description: product.description,
-      images: [product.image],
     },
     twitter: {
       card: "summary_large_image",
       title: product.title,
       description: product.description,
-      images: [product.image],
     },
   };
 }
@@ -45,9 +42,9 @@ export async function generateMetadata({
 export default async function ProductDetailPage({
   params,
 }: {
-  params: { locale: string; id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const { id } = params;
+  const id = params;
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${id}`, {
     next: { revalidate: 60 },

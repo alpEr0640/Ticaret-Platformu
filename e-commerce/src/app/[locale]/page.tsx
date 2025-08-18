@@ -15,13 +15,11 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title: t("title"),
       description: t("description"),
-      images: ["/landing.jpg"],
     },
     twitter: {
       card: "summary_large_image",
       title: t("title"),
       description: t("description"),
-      images: ["/landing.jpg"],
     },
   };
 }
@@ -29,20 +27,21 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function HomePage({
   params,
 }: {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`, {
     next: { revalidate: 10 },
   });
   const products: Product[] = await res.json();
   const firstFour = products.slice(0, 4);
+  const { locale } = await params;
 
   const t = await getTranslations({
-    locale: params.locale,
+    locale: locale,
     namespace: "products",
   });
   const s = await getTranslations({
-    locale: params.locale,
+    locale: locale,
     namespace: "homePage",
   });
 
@@ -50,7 +49,7 @@ export default async function HomePage({
     <DashboardContent>
       <div className="relative w-full h-[50vh] my-12 rounded-lg">
         <Image
-          src="/landing.jpg"
+          src="/Landing.jpg"
           alt="Hero banner"
           fill
           className="object-cover rounded-xl"
@@ -68,7 +67,7 @@ export default async function HomePage({
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 cursor-pointer">
           {firstFour.map((p) => (
-            <Link key={p.id} href={`/${params.locale}/products/${p.id}`}>
+            <Link key={p.id} href={`/${locale}/products/${p.id}`}>
               <ProductCard product={p} />
             </Link>
           ))}

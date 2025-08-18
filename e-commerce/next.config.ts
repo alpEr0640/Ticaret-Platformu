@@ -3,7 +3,13 @@ import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ["fakestoreapi.com"], 
+     remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'fakestoreapi.com', 
+      },
+      
+    ],
   },
 };
 

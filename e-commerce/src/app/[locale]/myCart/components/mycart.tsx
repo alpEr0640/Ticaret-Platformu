@@ -101,7 +101,7 @@ export default function MyCart() {
 
                 <div className="flex flex-col items-center sm:items-end gap-2">
                   <div className="font-bold text-xl text-primary">
-                    {(item.quantity * item.price).toFixed(2)}₺
+                    {(item.quantity * item.price).toFixed(2)}$
                   </div>
                   <Button
                     className="cursor-pointer"
