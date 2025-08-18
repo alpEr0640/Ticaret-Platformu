@@ -3,7 +3,6 @@ import { getTranslations } from "next-intl/server";
 import { Product } from "@/services/products/types";
 import ProductDetailClient from "./productDetail";
 
-// 🔹 Dinamik metadata
 export async function generateMetadata({
   params,
 }: {

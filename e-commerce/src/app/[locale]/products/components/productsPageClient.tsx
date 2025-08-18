@@ -7,14 +7,20 @@ import Link from "next/link";
 import { Product } from "@/services/products/types";
 import { useTranslations } from "next-intl";
 
-export default function ProductsPageClient({ initialProducts }: { initialProducts: Product[] }) {
+export default function ProductsPageClient({
+  initialProducts,
+}: {
+  initialProducts: Product[];
+}) {
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [sortOrder, setSortOrder] = useState<"none" | "asc" | "desc">("none");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [categories, setCategories] = useState<string[]>([]);
 
   useEffect(() => {
-    const uniqueCategories = Array.from(new Set(initialProducts.map((p) => p.category)));
+    const uniqueCategories = Array.from(
+      new Set(initialProducts.map((p) => p.category))
+    );
     setCategories(uniqueCategories);
   }, [initialProducts]);
 
@@ -36,16 +42,16 @@ export default function ProductsPageClient({ initialProducts }: { initialProduct
   return (
     <DashboardContent>
       <div className="mb-12">
-        <div className="flex flex-wrap justify-between items-center gap-4 py-4 my-4">
+        <div className="flex flex-col sm:flex-row flex-wrap justify-between items-center gap-4 py-4 my-4">
           <div className="text-4xl font-bold text-yellow-400">
             {t("allProducts")}
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="border rounded px-3 py-2"
+              className="border rounded px-3 py-2 w-full sm:w-auto"
             >
               <option value="all">All</option>
               {categories.map((c) => (
@@ -60,7 +66,7 @@ export default function ProductsPageClient({ initialProducts }: { initialProduct
               onChange={(e) =>
                 setSortOrder(e.target.value as "none" | "asc" | "desc")
               }
-              className="border rounded px-3 py-2"
+              className="border rounded px-3 py-2 w-full sm:w-auto"
             >
               <option value="none">{s("sort")}</option>
               <option value="asc">
