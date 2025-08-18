@@ -2,14 +2,14 @@
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 import { Link } from "@/i18n/navigation";
-import { Globe, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
-import { DashboardContent } from "./content";
+import Image from "next/image";
 
 export default function Header() {
   const locale = useLocale();
   const pathname = usePathname();
-  const t = useTranslations("Header");
+  const t = useTranslations("header");
 
   const nextLocale = locale === "en" ? "tr" : "en";
 
@@ -28,7 +28,9 @@ export default function Header() {
     <header className="bg-gradient-to-r from-gray-100 to-gray-200 shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-12 lg:px-4 xl:px-0 h-[70px] flex items-center justify-between ">
         <div className="text-2xl font-extrabold text-gray-800 tracking-wide">
-          My<span className="text-blue-500">Shop</span>
+          <Link href="/">
+            Kayra <span className="text-blue-500">Export</span>
+          </Link>
         </div>
 
         <nav className="hidden sm:flex items-center gap-8">
@@ -39,8 +41,7 @@ export default function Header() {
               className={`relative text-gray-700 font-medium transition 
               hover:text-blue-500
               after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-blue-500 after:transition-all hover:after:w-full
-              ${pathname === item.href ? "text-blue-500 after:w-full" : ""}
-              `}
+              ${pathname === item.href ? "text-blue-500 after:w-full" : ""}`}
             >
               {item.label}
             </Link>
@@ -49,10 +50,15 @@ export default function Header() {
           <Link
             href={pathWithoutLocale}
             locale={nextLocale}
-            className="flex items-center gap-2 bg-gray-300/50 text-gray-700 px-3 py-1 rounded-full hover:bg-blue-100 hover:text-blue-600 transition"
+            className="flex items-center gap-2 transition"
           >
-            <Globe size={16} />
-            {locale === "en" ? "Türkçe" : "English"}
+            <Image
+              src={locale === "tr" ? "/Tr.png" : "/Eng.png"}
+              alt={locale === "tr" ? "Türkçe" : "English"}
+              width={40}
+              height={40}
+              className="rounded-full border border-gray-300"
+            />
           </Link>
         </nav>
 
@@ -75,8 +81,7 @@ export default function Header() {
               key={item.href}
               href={item.href}
               className={`text-gray-700 font-medium transition hover:text-blue-500
-                ${pathname === item.href ? "text-blue-500" : ""}
-              `}
+                ${pathname === item.href ? "text-blue-500" : ""}`}
               onClick={() => setMenuOpen(false)}
             >
               {item.label}
@@ -86,11 +91,16 @@ export default function Header() {
           <Link
             href={pathWithoutLocale}
             locale={nextLocale}
-            className="flex items-center gap-2 bg-gray-300/50 text-gray-700 px-3 py-1 rounded-full hover:bg-blue-100 hover:text-blue-600 transition"
+            className="flex items-center gap-2 px-3 py-1 rounded-full hover:bg-blue-100 transition"
             onClick={() => setMenuOpen(false)}
           >
-            <Globe size={16} />
-            {locale === "en" ? "Türkçe" : "English"}
+            <Image
+              src={locale === "tr" ? "/Tr.png" : "/Eng.png"}
+              alt={locale === "tr" ? "Türkçe" : "English"}
+              width={32}
+              height={32}
+              className="rounded-full border border-gray-300"
+            />
           </Link>
         </nav>
       </div>

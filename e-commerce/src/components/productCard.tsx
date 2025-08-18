@@ -23,16 +23,12 @@ export default function ProductCard({ product }: ProductCardProps) {
       </div>
       <div className="flex flex-col justify-between  px-4 pb-4 gap-y-2 h-[150px] text-wrap w-full text-left bg-gray-50">
         <p className="text-lg font-medium line-clamp-2 pt-4 ">
-          
           {product.title}
         </p>
 
         <span className="flex justify-between font-bold text-2xl text-left text-black">
-          <p>
-            {" "}
-            <span className="text-yellow-300" >$ </span> {product.price}
-          </p>
-          <p >⭐{product.rating.rate} </p>
+          <p> ${product.price}</p>
+          <p>⭐{product.rating.rate} </p>
         </span>
       </div>
     </div>
