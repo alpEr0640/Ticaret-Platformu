@@ -6,9 +6,9 @@ import ProductDetailClient from "./productDetail";
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ locale: string; id: string }>;
+  params: { locale: string; id: string };
 }): Promise<Metadata> {
-  const { locale, id } =await  params;
+  const { locale, id } = params;
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${id}`, {
     next: { revalidate: 60 },
@@ -25,7 +25,7 @@ export async function generateMetadata({
   const product: Product = await res.json();
 
   return {
-    title: `${product.title} `,
+    title: `${product.title}`,
     description: product.description,
     openGraph: {
       title: product.title,
@@ -42,9 +42,9 @@ export async function generateMetadata({
 export default async function ProductDetailPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }) {
-  const id = params;
+  const { id } = params;
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${id}`, {
     next: { revalidate: 60 },
