@@ -4,60 +4,48 @@ import { Product } from "@/services/products/types";
 import ProductDetailClient from "./productDetail";
 
 type PageProps = {
-  params: Promise<{
+  params: {
     locale: string;
     id: string;
-  }>;
+  };
 };
 
-export async function generateMetadata({
-  params,
-}: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale, id } = await params;
 
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/products/${id}`,
-      {
-        next: { revalidate: 60 },
-      }
-    );
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${id}`, {
+    next: { revalidate: 60 },
+  });
 
-    if (!res.ok) {
-      const t = await getTranslations({ locale, namespace: "meta" });
-      return {
-        title: t("product.notFoundTitle"),
-        description: t("product.notFoundDesc"),
-      };
-    }
-
-    const product: Product | null = await res.json().catch(() => null);
-    if (!product) {
-      return {
-        title: "Ürün bulunamadı",
-        description: "Ürün bilgisi alınamadı",
-      };
-    }
-
+  if (!res.ok) {
+    const t = await getTranslations({ locale, namespace: "meta" });
     return {
-      title: product.title,
-      description: product.description,
-      openGraph: {
-        title: product.title,
-        description: product.description,
-      },
-      twitter: {
-        card: "summary_large_image",
-        title: product.title,
-        description: product.description,
-      },
+      title: t("product.notFoundTitle"),
+      description: t("product.notFoundDesc"),
     };
-  } catch {
+  }
+
+  const product: Product | null = await res.json().catch(() => null);
+  if (!product) {
     return {
       title: "Ürün bulunamadı",
       description: "Ürün bilgisi alınamadı",
     };
   }
+
+  return {
+    title: product.title,
+    description: product.description,
+    openGraph: {
+      title: product.title,
+      description: product.description,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: product.title,
+      description: product.description,
+    },
+  };
 }
 
 export default async function ProductDetailPage({ params }: PageProps) {
@@ -67,9 +55,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
     next: { revalidate: 60 },
   });
 
-  if (!res.ok) {
-    return <h1>Ürün bulunamadı</h1>;
-  }
+  if (!res.ok) return <h1>Ürün bulunamadı</h1>;
 
   let product: Product | null = null;
   try {
@@ -78,9 +64,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
     return <h1>Ürün bilgisi okunamadı</h1>;
   }
 
-  if (!product) {
-    return <h1>Ürün bulunamadı</h1>;
-  }
+  if (!product) return <h1>Ürün bulunamadı</h1>;
 
   return <ProductDetailClient product={product} />;
 }
