@@ -3,10 +3,9 @@ import { getTranslations } from "next-intl/server";
 import { Product } from "@/services/products/types";
 import ProductDetailClient from "./productDetail";
 
-type RouteParams = { locale: string; id: string };
-type PageProps = { params: RouteParams };
-
+// -------- generateMetadata --------
 export async function generateMetadata({
+
   params,
 }: {
   params: Promise<{ locale: string; id: string }>;
@@ -54,11 +53,14 @@ export async function generateMetadata({
   };
 }
 
+// -------- Page Component --------
 export default async function ProductDetailPage({
-  params,
-}: PageProps) {
   
- const { id } = await params as { locale: string; id: string }
+  params,
+}: {
+  params: Promise<{ locale: string; id: string }>;
+}) {
+  const { id } = await params;
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${id}`, {
     next: { revalidate: 60 },
@@ -74,5 +76,6 @@ export default async function ProductDetailPage({
   }
 
   if (!product) return <h1>Ürün bulunamadı</h1>;
+
   return <ProductDetailClient product={product} />;
 }
