@@ -54,8 +54,11 @@ export async function generateMetadata({
   };
 }
 
-export default async function ProductDetailPage({ params }: PageProps) {
-  const { id } = await params;
+export default async function ProductDetailPage({
+  params,
+}: PageProps) {
+  
+ const { id } = await params as { locale: string; id: string }
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${id}`, {
     next: { revalidate: 60 },
