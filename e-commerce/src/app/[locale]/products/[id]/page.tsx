@@ -8,7 +8,9 @@ type PageProps = { params: RouteParams };
 
 export async function generateMetadata({
   params,
-}: PageProps): Promise<Metadata> {
+}: {
+  params: Promise<{ locale: string; id: string }>;
+}): Promise<Metadata> {
   const { locale, id } = await params;
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${id}`, {
@@ -23,15 +25,27 @@ export async function generateMetadata({
     };
   }
 
-  const product: Product | null = await res.json().catch(() => null);
+  let product: Product | null = null;
+  try {
+    product = await res.json();
+  } catch {
+    product = null;
+  }
+
   if (!product) {
-    return { title: "Ürün bulunamadı", description: "Ürün bilgisi alınamadı" };
+    return {
+      title: "Ürün bulunamadı",
+      description: "Ürün bilgisi alınamadı",
+    };
   }
 
   return {
     title: product.title,
     description: product.description,
-    openGraph: { title: product.title, description: product.description },
+    openGraph: {
+      title: product.title,
+      description: product.description,
+    },
     twitter: {
       card: "summary_large_image",
       title: product.title,
