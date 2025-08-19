@@ -1,12 +1,14 @@
+import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { Product } from "@/services/products/types";
 import ProductDetailClient from "./productDetail";
 
+type RouteParams = { locale: string; id: string };
+type PageProps = { params: RouteParams };
+
 export async function generateMetadata({
   params,
-}: {
-  params: Promise<{ id: string; locale: string }>;
-}) {
+}: PageProps): Promise<Metadata> {
   const { locale, id } = await params;
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${id}`, {
@@ -23,19 +25,13 @@ export async function generateMetadata({
 
   const product: Product | null = await res.json().catch(() => null);
   if (!product) {
-    return {
-      title: "Ürün bulunamadı",
-      description: "Ürün bilgisi alınamadı",
-    };
+    return { title: "Ürün bulunamadı", description: "Ürün bilgisi alınamadı" };
   }
 
   return {
     title: product.title,
     description: product.description,
-    openGraph: {
-      title: product.title,
-      description: product.description,
-    },
+    openGraph: { title: product.title, description: product.description },
     twitter: {
       card: "summary_large_image",
       title: product.title,
@@ -44,11 +40,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function ProductDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default async function ProductDetailPage({ params }: PageProps) {
   const { id } = await params;
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${id}`, {
@@ -65,6 +57,5 @@ export default async function ProductDetailPage({
   }
 
   if (!product) return <h1>Ürün bulunamadı</h1>;
-
   return <ProductDetailClient product={product} />;
 }
