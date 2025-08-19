@@ -3,11 +3,16 @@ import { getTranslations } from "next-intl/server";
 import { Product } from "@/services/products/types";
 import ProductDetailClient from "./productDetail";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { locale: string; id: string };
-}): Promise<Metadata> {
+type PageProps = {
+  params: {
+    locale: string;
+    id: string;
+  };
+};
+
+export async function generateMetadata(
+  { params }: PageProps
+): Promise<Metadata> {
   const { locale, id } = params;
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${id}`, {
@@ -39,11 +44,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function ProductDetailPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default async function ProductDetailPage({ params }: PageProps) {
   const { id } = params;
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${id}`, {
