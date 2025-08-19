@@ -18,7 +18,11 @@ export default function Providers({
   const [queryClient] = useState(() => new QueryClient());
   return (
     <Provider store={store}>
-      <NextIntlClientProvider locale={locale} messages={messages}>
+      <NextIntlClientProvider
+        locale={locale}
+        messages={messages}
+        timeZone="Europe/Istanbul"
+      >
         <QueryClientProvider client={queryClient}>
           {children}
         </QueryClientProvider>
