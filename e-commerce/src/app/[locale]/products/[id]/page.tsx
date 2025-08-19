@@ -3,13 +3,12 @@ import { getTranslations } from "next-intl/server";
 import { Product } from "@/services/products/types";
 import ProductDetailClient from "./productDetail";
 
-type RouteParams = { locale: string; id: string };
-type PageProps = { params: RouteParams };
-
 export async function generateMetadata({
   params,
-}: PageProps): Promise<Metadata> {
-  const { locale, id } = await params;
+}: {
+  params: Promise<{ locale: string; id: string }>;
+}): Promise<Metadata> {
+  const { locale, id } =await  params;
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${id}`, {
     next: { revalidate: 60 },
@@ -23,15 +22,15 @@ export async function generateMetadata({
     };
   }
 
-  const product: Product | null = await res.json().catch(() => null);
-  if (!product) {
-    return { title: "Ürün bulunamadı", description: "Ürün bilgisi alınamadı" };
-  }
+  const product: Product = await res.json();
 
   return {
-    title: product.title,
+    title: `${product.title} `,
     description: product.description,
-    openGraph: { title: product.title, description: product.description },
+    openGraph: {
+      title: product.title,
+      description: product.description,
+    },
     twitter: {
       card: "summary_large_image",
       title: product.title,
@@ -40,22 +39,22 @@ export async function generateMetadata({
   };
 }
 
-export default async function ProductDetailPage({ params }: PageProps) {
-  const { id } = await params;
+export default async function ProductDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const id = params;
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${id}`, {
     next: { revalidate: 60 },
   });
 
-  if (!res.ok) return <h1>Ürün bulunamadı</h1>;
-
-  let product: Product | null = null;
-  try {
-    product = await res.json();
-  } catch {
-    return <h1>Ürün bilgisi okunamadı</h1>;
+  if (!res.ok) {
+    return <h1>Ürün bulunamadı</h1>;
   }
 
-  if (!product) return <h1>Ürün bulunamadı</h1>;
+  const product: Product = await res.json();
+
   return <ProductDetailClient product={product} />;
 }
